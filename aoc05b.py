@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import aoc
 import functools
-import json
+
+import aoc
 
 data_in = aoc.read_input()
 #data_in = aoc.read_example()
@@ -11,8 +11,8 @@ ORDERING = []
 UPDATES = {}
 
 def mysort(a, b):
-    for o in ORDERING:
-        if (a, b) == o:
+    for order in ORDERING:
+        if (a, b) == order:
             return -1
     return 1
 
@@ -43,4 +43,3 @@ for update in UPDATES:
         mid = len(u_sorted) // 2
         total += u_sorted[mid]
 print(total)
-
