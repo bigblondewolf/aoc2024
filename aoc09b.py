@@ -18,14 +18,11 @@ for entry in data_in:
         for i in range(entry):
             disk_space.append(".")
     is_in_file = not is_in_file
-#print("".join([f"{x}" for x in disk_space]))
-print(f"Created disk space ({len(disk_space)})")
 
 file_idx = len(disk_space)
 files_moved = []
 while file_idx > 0:
-    if file_idx % 100 == 0:
-        print(f"findex: {file_idx}")
+    #print(f"{file_idx}")
     if disk_space[file_idx-1] == ".":
         file_idx -= 1
         continue
@@ -33,29 +30,21 @@ while file_idx > 0:
         file_idx -= 1
         continue
     file_len = 1
-    #print(f"fi: {file_idx}")
     while file_idx - file_len >= 0:
-        if file_len > 100:
-            break
         file_contents = disk_space[file_idx-file_len:file_idx]
-        #print(f" fl: {file_len}: {file_contents}")
         if len(set(disk_space[file_idx-(file_len+1):file_idx])) > 1:
             break
         else:
             file_len += 1
-    #print(f"fl final: {file_len}")
     for blank_idx in range(file_idx - file_len):
+        if disk_space[blank_idx] != ".":
+            continue
         if disk_space[blank_idx:blank_idx+file_len] == file_len * ["."]:
             disk_space[blank_idx:blank_idx+file_len] = file_contents
             disk_space[file_idx-file_len:file_idx] = file_len * ["."]
             files_moved.append(file_contents[0])
             break
     file_idx -= file_len
-    #print("".join([f"{x}" for x in disk_space]))
-
-print(disk_space)
-print("Sorted")
-
 
 total = 0
 for i in range(len(disk_space)):
