@@ -10,6 +10,7 @@ Point = collections.namedtuple("Point", ["x", "y"])
 data_in = aoc.read_input_aslist_parseints(has_spaces=False)
 #data_in = aoc.read_example_aslist_parseints(has_spaces=False)
 
+### With NetworkX
 G = nx.DiGraph()
 xmax = len(data_in[0])
 ymax = len(data_in)
@@ -46,3 +47,32 @@ for z in zeroes:
             rank += len(list(nx.all_simple_paths(G, z, n)))
     total_rank += rank
 print(total_rank)
+
+### With recursion
+def rank(x, y):
+    if data_in[y][x] == 9:
+        return 1
+    this_rank = 0
+    for (x2, y2) in [(x,y-1), (x,y+1), (x-1,y), (x+1,y)]:
+        if( x2 < 0
+            or x2 >= xmax
+            or y2 < 0
+            or y2 >= ymax
+            ):
+            continue
+        if data_in[y2][x2] != data_in[y][x] + 1:
+            continue
+        this_rank += rank(x2, y2)
+    return this_rank
+
+
+xmax = len(data_in[0])
+ymax = len(data_in)
+
+total_rank = 0
+for y in range(ymax):
+    for x in range(xmax):
+        if data_in[y][x] == 0:
+            total_rank += rank(x, y)
+print(total_rank)
+
