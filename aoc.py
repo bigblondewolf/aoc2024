@@ -29,14 +29,20 @@ def read_example_aslist():
         return [x.split() for x in data_in]
     return [list(x.strip()) for x in data_in]
 
-def read_input_aslist_parseints():
+def read_input_aslist_parseints(has_spaces=True):
     input_fn = os.path.basename(sys.argv[0])[:5] + ".txt"
     with open(input_fn) as infile:
         data_in = infile.readlines()
-    return [[int(y) for y in x.split()] for x in data_in]
+    if has_spaces:
+        return [[int(y) for y in x.split()] for x in data_in]
+    else:
+        return [[int(y) for y in x.strip()] for x in data_in]
 
-def read_example_aslist_parseints():
+def read_example_aslist_parseints(has_spaces=True):
     input_fn = os.path.basename(sys.argv[0])[:5] + ".txt.example"
     with open(input_fn) as infile:
         data_in = infile.readlines()
-    return [[int(y) for y in x.split()] for x in data_in]
+    if has_spaces:
+        return [[int(y) for y in x.split()] for x in data_in]
+    else:
+        return [[int(y) for y in x.strip()] for x in data_in]
