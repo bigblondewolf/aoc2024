@@ -61,40 +61,44 @@ for y, row in enumerate(data_in):
             end = (x, y, ">")
         for d in "<>v^":
             G.add_node((x, y, d))
-        for d1 in "><v^":
-            y1 = y
-            x1 = x-1
-            if x1 >= 0 and x1 < len(row) and data_in[y1][x1] != "#":
-                G.add_node((x1, y1, d1))
-                if d == d1:
-                    G.add_edge((x, y, d), (x1, y1, d1), weight=1)
-                else:
-                    G.add_edge((x, y, d), (x1, y1, d1), weight=1001)
-            y1 = y
-            x1 = x+1
-            if x1 >= 0 and x1 < len(row) and data_in[y1][x1] != "#":
-                G.add_node((x1, y1, d1))
-                if d == d1:
-                    G.add_edge((x, y, d), (x1, y1, d1), weight=1)
-                else:
-                    G.add_edge((x, y, d), (x1, y1, d1), weight=1001)
-            y1 = y-1
-            x1 = x
-            if y1 >= 0 and y1 < len(row) and data_in[y1][x1] != "#":
-                G.add_node((x1, y1, d1))
-                if d == d1:
-                    G.add_edge((x, y, d), (x1, y1, d1), weight=1)
-                else:
-                    G.add_edge((x, y, d), (x1, y1, d1), weight=1001)
-            y1 = y+1
-            x1 = x
-            if y1 >= 0 and y1 < len(row) and data_in[y1][x1] != "#":
-                G.add_node((x1, y1, d1))
-                if d == d1:
-                    G.add_edge((x, y, d), (x1, y1, d1), weight=1)
-                else:
-                    G.add_edge((x, y, d), (x1, y1, d1), weight=1001)
+            for d1 in "><v^":
+                y1 = y
+                x1 = x-1
+                if x1 >= 0 and x1 < len(row) and data_in[y1][x1] != "#":
+                    G.add_node((x1, y1, d1))
+                    if d == ">" and d1 == ">":
+                        G.add_edge((x, y, d), (x1, y1, d1), weight=1)
+                    else:
+                        if (d == "v" or d == "^") and d1 == "<":
+                            G.add_edge((x, y, d), (x1, y1, d1), weight=1001)
+                y1 = y
+                x1 = x+1
+                if x1 >= 0 and x1 < len(row) and data_in[y1][x1] != "#":
+                    G.add_node((x1, y1, d1))
+                    if d == "<" and d1 == "<":
+                        G.add_edge((x, y, d), (x1, y1, d1), weight=1)
+                    else:
+                        if (d == "v" or d == "^") and d1 == ">":
+                            G.add_edge((x, y, d), (x1, y1, d1), weight=1001)
+                y1 = y-1
+                x1 = x
+                if y1 >= 0 and y1 < len(row) and data_in[y1][x1] != "#":
+                    G.add_node((x1, y1, d1))
+                    if d == "^" and d1 == "^":
+                        G.add_edge((x, y, d), (x1, y1, d1), weight=1)
+                    else:
+                        if (d == "<" or d == ">") and d1 == "^":
+                            G.add_edge((x, y, d), (x1, y1, d1), weight=1001)
+                y1 = y+1
+                x1 = x
+                if y1 >= 0 and y1 < len(row) and data_in[y1][x1] != "#":
+                    G.add_node((x1, y1, d1))
+                    if d == "v" and d1 == "v":
+                        G.add_edge((x, y, d), (x1, y1, d1), weight=1)
+                    else:
+                        if (d == "v" or d == "^") and d1 == "v":
+                            G.add_edge((x, y, d), (x1, y1, d1), weight=1001)
 
 dp = nx.dijkstra_path(G, start, (13, 1, ">"))
-print(json.dumps(dp, indent=2))
+print(dp)
 print(nx.path_weight(G, dp, "weight"))
